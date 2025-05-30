@@ -1,4 +1,4 @@
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*freestat(char	*staticbuffer, char *buffer)
 {
@@ -92,16 +92,16 @@ char	*therest(char *staticbuffer)
 
 char	*get_next_line(int fd)
 {
-	static char	*staticbuffer = NULL;
+	static char	*staticbuffer[1024];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	staticbuffer = readfile(fd, staticbuffer);
-	if (!staticbuffer)
+	staticbuffer[fd] = readfile(fd, staticbuffer[fd]);
+	if (!staticbuffer[fd])
 		return (NULL);
-	line = definedline(staticbuffer);
-	staticbuffer = therest(staticbuffer);
+	line = definedline(staticbuffer[fd]);
+	staticbuffer[fd] = therest(staticbuffer[fd]);
 	return (line);
 }
 /*
@@ -117,4 +117,4 @@ while ((line = get_next_line(fd)) != NULL)
 
     close(fd); 
     return 0;
- }  */
+ } */
